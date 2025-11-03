@@ -1,0 +1,44 @@
+/*
+coord: lon, lat
+weather []: id, main, description, icon 
+base
+main: temp, feels_like, temp_min, temp_max, pressure, humidity
+visibility
+wind: speed, deg
+*/
+
+{
+  "coord": { "lon": 24.0833, "lat": 57 },
+  "weather": [
+    {
+      "id": 804,
+      "main": "Clouds",
+      "description": "overcast clouds",
+      "icon": "04d"
+    }
+  ],
+  "base": "stations",
+  "main": {
+    "temp": 278.93,
+    "feels_like": 276.92,
+    "temp_min": 278.1,
+    "temp_max": 279.19,
+    "pressure": 997,
+    "humidity": 88
+  },
+  "visibility": 10000,
+  "wind": { "speed": 2.57, "deg": 70 },
+  "clouds": { "all": 100 },
+  "dt": 1680269460,
+  "sys": {
+    "type": 2,
+    "id": 2075320,
+    "country": "LV",
+    "sunrise": 1680235013,
+    "sunset": 1680281926
+  },
+  "timezone": 10800,
+  "id": 456173,
+  "name": "Rīga",
+  "cod": 200
+}
