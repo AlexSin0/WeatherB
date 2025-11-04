@@ -7,7 +7,6 @@ foreach ($env as $key => $value) {
 
 require('myFunctions.php');
 require('getWeather.php');
-//require('learn/counter.php');
 
 $city_raw = $_GET['city'] ?? 'Riga';
 
@@ -45,35 +44,31 @@ $current_dt = convert_date($current->dt + $timezone);
     <link rel="stylesheet" href="styles/index.css">
 </head>
 
-<body>
+<body class="roboto">
 
-    <div class="general-block">
-        <h1>Weather Forecast</h1>
+    <div class="general-block" style="display: flex; justify-content: space-between; align-items: center;">
+        <h1>
+            Weather Forecast
+        </h1>
+        <span style="font-size: xx-large;">
+            <?php echo "$city " . get_county_flag($current->sys->country) ?>
+        </span>
     </div>
 
-    <div id="search-panel">
-
-        <form>
-            <input type="text" placeholder="Search..." name="city" value="<?php echo $city_raw; ?>" id="search-bar">
-            <button type="submit" id="search-button">Submit</button>
-        </form>
-
-    </div>
+    <form id="search-panel">
+        <input type="text" placeholder="Search..." name="city" value="<?php echo $city_raw; ?>" id="search-bar">
+        <button type="submit" id="search-button">Submit</button>
+    </form>
 
     <div class="main-weather">
         <div class="main-weather-block">
-
             <p>
-                <?php echo $current_dt['week'] . ', ' . $current_dt['date'] ?><br>
-                <i class="shadow-text">
+                <?php echo $current_dt['week'] . ', ' . $current_dt['date'] ?>
+                <span class="shadow-text">
                     <?php echo $current_dt['time'] ?>
-                </i>
+                </span>
             </p>
 
-
-            <h2>
-                <?php echo $city . ', ' . $current->sys->country ?>
-            </h2>
             <p class="shadow-text">
                 <?php echo $current_coord->lon ?>&deg;N,
                 <?php echo $current_coord->lat ?>&deg;E
@@ -111,12 +106,13 @@ $current_dt = convert_date($current->dt + $timezone);
             </p>
 
             <div>
-                <p>
+                <p style="display: inline-block;">
                     <i class="shadow-text">Wind</i><br>
-                    <?php echo $current_wind->speed . ' km/h ' ?>
+                    <?php echo $current_wind->speed . ' km/h' ?>
+                </p>
 
-                    <img src="graphics/wind-direction.png" alt="Wind direction icon" id="wind-direction"
-                        style="transform: rotate(<?php echo $current_wind->deg - 180 ?>deg)">
+                <img src="graphics/wind-direction.png" alt="Wind direction icon" id="wind-direction"
+                    style="transform: rotate(<?php echo $current_wind->deg - 180 ?>deg)">
             </div>
 
         </div>

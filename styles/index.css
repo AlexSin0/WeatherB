@@ -1,6 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+.roboto {
+  font-family: "Roboto", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 300;
+  font-style: normal;
+  font-variation-settings: "wdth" 200;
+}
+
 body {
   background: #484855;
   color: var(--color-text);
+  margin: 0;
   /*
     #DC3522
     #D9CB9E
@@ -12,7 +23,7 @@ body {
   --color-panel: #262630;
   --color-sub: #3a3b46;
   --color-text: #e8feff;
-  --spacer: 12px;
+  --spacer: 1rem;
   --border: 2px;
 }
 
@@ -20,64 +31,62 @@ body {
 .general-block,
 .main-weather,
 #search-panel {
-  margin-inline: 1%;
-  margin-bottom: var(--spacer);
+  margin: var(--spacer);
 }
 
 .general-block,
 .main-weather-block {
   background: var(--color-panel);
-  padding: 2%;
-  /* margin-inline: 1%; */
-  /* margin-bottom: var(--spacer); */
+  padding: 1rem;
   flex-grow: 1;
 }
 
 .forecast-block {
   background-color: var(--color-panel);
-  /* padding-inline: 5px; */
   text-align: center;
+  padding: 1rem 0rem;
+  width: 7rem;
 }
 
 .forecast-scroller {
-  /*width: 90%;*/
-  /*margin: var(--spacer);*/
-  margin-inline: 1%;
+  margin-inline: 1rem;
   display: grid;
   grid-auto-flow: column;
-  grid-auto-columns: 120px;
+  /* grid-auto-columns: 8rem; */
   gap: var(--spacer);
   overflow-x: auto;
   overscroll-behavior-inline: contain;
-  /*scroll-snap-type: inline mandatory;*/
+  /* scroll-snap-type: inline mandatory; */
 }
 
-/*.forecast-scroller > * {
+/* .forecast-scroller > * {
   scroll-snap-align: start;
-}*/
+} */
 
 #search-panel {
   background: var(--color-panel);
-  padding: 2%;
+  padding: 1rem;
+  display: flex;
+  gap: var(--spacer);
 }
 
 #search-bar {
   all: unset;
   background: var(--color-sub);
-  padding-inline: 1%;
+  padding-inline: 1rem;
   width: 80%;
   height: 2.5rem;
   border: var(--color-panel) var(--border) inset;
+  flex-grow: 1;
 }
 
 #search-button {
   all: unset;
   background: var(--color-sub);
-  /* padding: 5px; */
   color: var(--color-text);
   height: 2.5rem;
   border: var(--color-panel) var(--border) outset;
-  padding-inline: 1%;
+  padding-inline: 1rem;
 }
 
 #search-button:active {
@@ -101,7 +110,7 @@ body {
 }
 
 #wind-direction {
-  width: 40px;
+  width: 3rem;
   filter: invert(100%);
 }
 
@@ -111,5 +120,15 @@ body {
 }
 
 .main-weather-block p {
-  margin-block: 0.6em;
+  margin-block: 0.5em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
 }
