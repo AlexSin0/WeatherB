@@ -1,22 +1,26 @@
 <?php
 
-$env = parse_ini_file('.env');
-foreach ($env as $key => $value) {
-    putenv("$key=$value");
-}
-
 require('myFunctions.php');
 require('getWeather.php');
 
 $city_raw = $_GET['city'] ?? 'Riga';
 
 $weatherData = get_weatherData($city_raw);
-
 $current = json_decode($weatherData->weather_json);
 $forecast = json_decode($weatherData->forecast_json);
 
-if ($current->cod != 200) {
-    die("No city found " . $weatherData->weather_json);
+$city_error;
+if ($current->cod == 404) {
+    $city_error = "City $city_raw was not found.";
+
+    $city_raw = 'Riga';
+
+    $weatherData = get_weatherData($city_raw);
+    $current = json_decode($weatherData->weather_json);
+    $forecast = json_decode($weatherData->forecast_json);
+}
+else if ($current->cod != 200) {
+    $city_error = 'Unknown error ' . $weatherData->weather_json;
 }
 
 $city = $current->name;
@@ -45,7 +49,6 @@ $current_dt = convert_date($current->dt + $timezone);
 </head>
 
 <body class="roboto">
-
     <div class="general-block" style="display: flex; justify-content: space-between; align-items: center;">
         <h1>
             Weather Forecast
@@ -54,6 +57,20 @@ $current_dt = convert_date($current->dt + $timezone);
             <?php echo "$city " . get_county_flag($current->sys->country) ?>
         </span>
     </div>
+
+    <? if ($city_error): ?>
+
+    <div class="general-block"
+        style="display: flex; justify-content: space-between; align-items: center; background: #C21;">
+        <span style="font-size: large;">
+            Error
+        </span>
+        <span>
+            <? echo htmlspecialchars($city_error) ?>
+        </span>
+    </div>
+
+    <? endif ?>
 
     <form id="search-panel">
         <input type="text" placeholder="Search..." name="city" value="<?php echo $city_raw; ?>" id="search-bar">
@@ -111,8 +128,13 @@ $current_dt = convert_date($current->dt + $timezone);
                     <?php echo $current_wind->speed . ' km/h' ?>
                 </p>
 
-                <img src="graphics/wind-direction.png" alt="Wind direction icon" id="wind-direction"
-                    style="transform: rotate(<?php echo $current_wind->deg - 180 ?>deg)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-mouse-pointer2-icon lucide-mouse-pointer-2"
+                    style="transform: rotate(<?php echo $current_wind->deg - 180 + 45 ?>deg)">
+                    <path
+                        d="M4.037 4.688a.495.495 0 0 1 .651-.651l16 6.5a.5.5 0 0 1-.063.947l-6.124 1.58a2 2 0 0 0-1.438 1.435l-1.579 6.126a.5.5 0 0 1-.947.063z" />
+                </svg>
             </div>
 
         </div>
@@ -123,26 +145,21 @@ $current_dt = convert_date($current->dt + $timezone);
         <?php foreach ($forecast->list as $w): ?>
 
         <div class="forecast-block">
-
             <p>
-                <?php
+                <?
                     $dt = convert_date($w->dt + $timezone);
-
                     echo $dt['week'] . '<br>' . $dt['date'];
-
-                    ?>
+                ?>
             </p>
 
             <img src="<?php echo WEATHER_ICON_URL . $w->weather[0]->icon ?>.png" alt="Weather icon">
 
             <p>
-                <?php echo $dt['time']; ?><br>
+                <? echo $dt['time']; ?><br>
             </p>
-
             <p>
-                <?php echo round($w->main->temp) . '&deg;C'; ?>
+                <? echo round($w->main->temp) . '&deg;C'; ?>
             </p>
-
         </div>
 
         <?php endforeach ?>
