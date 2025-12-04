@@ -1,0 +1,11 @@
+.vscode
+.git
+.gitignore
+
+Dockerfile
+.dockerignore
+
+samples/
+logs.txt
+
+.env

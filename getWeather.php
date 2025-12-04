@@ -46,52 +46,53 @@ function get_weatherData_api(string $city): WeatherData
     return new WeatherData($city, $w_res, $f_res);
 }
 
-function get_weatherData_cached(string $city)
-{
-    $conn = new mysqli('localhost', 'root', null, 'weather');
+// function get_weatherData_cached(string $city)
+// {
+//     $conn = new mysqli('localhost', 'root', null, 'weather');
 
-    if ($conn->connect_error) {
-        return;
-    }
+//     if ($conn->connect_error) {
+//         return;
+//     }
 
-    $cached_db = $conn->query("SELECT * FROM cache WHERE 
-    city = '$city' AND timestamp > DATE_SUB(NOW(), INTERVAL '1' HOUR)");
+//     $cached_db = $conn->query("SELECT * FROM cache WHERE 
+//     city = '$city' AND timestamp > DATE_SUB(NOW(), INTERVAL '1' HOUR)");
 
-    $conn->close();
+//     $conn->close();
 
-    if ($cached_db->num_rows == 0) {
-        return;
-    }
+//     if ($cached_db->num_rows == 0) {
+//         return;
+//     }
 
-    $cached = $cached_db->fetch_array();
+//     $cached = $cached_db->fetch_array();
 
-    return new WeatherData(
-        $cached['city'],
-        $cached['weather'],
-        $cached['forecast']
-    );
-}
+//     return new WeatherData(
+//         $cached['city'],
+//         $cached['weather'],
+//         $cached['forecast']
+//     );
+// }
 
-function cache_weatherData(WeatherData $weatherData)
-{
-    $conn = new mysqli('localhost', 'root', null, 'weather');
+// function cache_weatherData(WeatherData $weatherData)
+// {
+//     $conn = new mysqli('localhost', 'root', null, 'weather');
 
-    if ($conn->connect_error) {
-        return;
-    }
+//     if ($conn->connect_error) {
+//         return;
+//     }
 
-    extract(get_object_vars($weatherData));
+//     extract(get_object_vars($weatherData));
 
-    $conn->query("DELETE FROM cache WHERE city = '$city'");
-    $conn->query("INSERT INTO cache VALUES 
-    ('$city', NOW(), '$weather_json', '$forecast_json')");
-}
+//     $conn->query("DELETE FROM cache WHERE city = '$city'");
+//     $conn->query("INSERT INTO cache VALUES 
+//     ('$city', NOW(), '$weather_json', '$forecast_json')");
+// }
 
 function get_weatherData(string $city)
 {
-    $weatherData = get_weatherData_cached($city) ?? get_weatherData_api($city);
+    $weatherData = get_weatherData_api($city);
 
-    cache_weatherData($weatherData);
+    // $weatherData = get_weatherData_cached($city) ?? get_weatherData_api($city);
+    // cache_weatherData($weatherData);
 
     return $weatherData;
 }
